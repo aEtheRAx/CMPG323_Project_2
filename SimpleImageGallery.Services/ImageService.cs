@@ -62,15 +62,6 @@ namespace SimpleImageGallery.Services
         {
             return tags.Split(",").Select(tag => new ImageTag {
                 Description = tag}).ToList();
-            /*var imageTags = new List<ImageTag>();
-
-            foreach(var tag in tagList)
-            {
-                imageTags.Add(new ImageTag
-                {
-                    Description = tag
-                });
-            }*/
         }
     }
 }

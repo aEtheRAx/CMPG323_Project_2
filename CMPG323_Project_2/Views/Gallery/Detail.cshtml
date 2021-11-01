@@ -14,6 +14,7 @@
     <div class="row controls">
         <a class="btn btn-primary" asp-controller="Gallery" asp-action="Index">Back to Gallery</a>
         <a class="btn btn-primary" href="@Model.Url">Download</a>
-        <a class="btn btn-primary" asp-controller="Image" asp-action="Delete">Delete the Image</a>
+        <!--<a class="btn btn-primary" asp-controller="Image" asp-action="Delete">Delete</a>-->
+        <a href="/Gallery/Detail/Delete?blobName=@Model.Title">Delete</a>
     </div>
 </div>

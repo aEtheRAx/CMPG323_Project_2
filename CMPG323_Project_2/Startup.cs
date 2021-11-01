@@ -46,6 +46,16 @@ namespace CMPG323_Project_2
                  options.UseSqlServer(Configuration
                  .GetConnectionString("DefaultConnection")));
              */
+            /*
+            services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            });*/
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

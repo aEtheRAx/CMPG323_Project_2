@@ -62,18 +62,16 @@ namespace CMPG323_Project_2.Controllers
             return RedirectToAction("Index");
         }*/
 
-        /*
-        public async Task<IActionResult> Delete(string blobName) 
+        public async Task<IActionResult> Delete(string blobName)
         {
-            ImageController imgController = new ImageController(_config, _imageService);
-            var container = _imageService.GetBlobContainer(AzureConnectionString, "imagcontainer");
-            var content = ContentDispositionHeaderValue.Parse(blobName.ContentDisposition);
-
-            var fileName = content.FileName.Trim('"');
-            var blockBlob = container.GetBlockBlobReference(fileName);
-            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
-            await blob.DeleteIfExistsAsync(); 
-            return RedirectToAction("Index", "Gallery"); 
-        }*/
+            string blobstorageconnection = _config.GetValue<string>("blobstorage");
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
+            CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+            string strContainerName = "imagcontainer";
+            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(strContainerName);
+            var blob = cloudBlobContainer.GetBlobReference(blobName);
+            await blob.DeleteIfExistsAsync();
+            return RedirectToAction("Index", "Gallery");
+        }
     }
 }
