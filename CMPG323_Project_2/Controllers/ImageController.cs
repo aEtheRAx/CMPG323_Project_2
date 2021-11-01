@@ -1,4 +1,6 @@
-﻿using CMPG323_Project_2.Models;
+﻿using CMPG323_Project_2.Data;
+using CMPG323_Project_2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -11,10 +13,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CMPG323_Project_2.Controllers
 {
+    [Authorize]
     public class ImageController : Controller
     {
         private IConfiguration _config;
@@ -45,7 +49,9 @@ namespace CMPG323_Project_2.Controllers
             var blockBlob = container.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
 
-            await _imageService.SetImage(title, tags, blockBlob.Uri);
+            //string strCurrentUserName = User.Identity.Name;
+            string strCurrentUserName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _imageService.SetImage(title, tags, blockBlob.Uri,strCurrentUserName );
             return RedirectToAction("Index", "Gallery");
         }
 

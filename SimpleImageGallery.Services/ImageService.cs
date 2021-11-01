@@ -22,7 +22,12 @@ namespace SimpleImageGallery.Services
 
         public IEnumerable<GalleryImage> GetAll()
         {
-            return _ctx.GalleryImages.Include(SimpleImageGallery => SimpleImageGallery.Tags);
+            return _ctx.GalleryImages.Include(SimpleImageGallery => SimpleImageGallery.Tags /*was Tag gewees*/);
+        }
+
+        public IEnumerable<GalleryImage> GetAll(string user_id)
+        {
+            return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == user_id);
         }
 
         public GalleryImage GetById(int id)
@@ -42,6 +47,21 @@ namespace SimpleImageGallery.Services
             var storageAccount = CloudStorageAccount.Parse(azureConnectionString);
             var blobClient = storageAccount.CreateCloudBlobClient();
             return blobClient.GetContainerReference(containerName);
+        }
+
+        public async Task SetImage(string title, string tags, Uri uri, string user_id)
+        {
+            var image = new GalleryImage
+            {
+                Title = title,
+                Tags = ParseTags(tags),
+                Url = uri.AbsoluteUri,
+                Created = DateTime.Now,
+                user_id = user_id
+            };
+
+            _ctx.Add(image);
+            await _ctx.SaveChangesAsync();
         }
 
         public async Task SetImage(string title, string tags, Uri uri)
