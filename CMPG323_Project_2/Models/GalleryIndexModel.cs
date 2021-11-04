@@ -10,5 +10,8 @@ namespace CMPG323_Project_2.Models
     {
         public IEnumerable<GalleryImage> Images { get; set; }
         public string SearchQuery { get; set; }
+
+        public string selectedvalue { get; set; }
+
     }
 }

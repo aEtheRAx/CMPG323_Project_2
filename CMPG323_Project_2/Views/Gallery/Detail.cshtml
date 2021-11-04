@@ -1,6 +1,6 @@
 ﻿@model CMPG323_Project_2.Models.GalleryDetailModel
 
-<div class="container body-content">
+<div class="container body-content" >
     <div class=" row image-detail-container">
         <div class="image-detail">
             <img src="@Model.Url" alt="@Model.Title" />
@@ -14,7 +14,7 @@
     <div class="row controls">
         <a class="btn btn-primary" asp-controller="Gallery" asp-action="Index">Back to Gallery</a>
         <a class="btn btn-primary" href="@Model.Url">Download</a>
-        <!--<a class="btn btn-primary" asp-controller="Image" asp-action="Delete">Delete</a>-->
+        <a class="btn btn-primary" asp-controller="Image" asp-action="Update" asp-route-id="@Model.Id">Update this images' metadata</a>
         <a href="@Url.Action("Delete","Image",new { id = Model.Id })" class="btn btn-primary">Delete</a>
     </div>
 </div>

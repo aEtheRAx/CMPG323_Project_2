@@ -11,7 +11,6 @@ namespace CMPG323_Project_2.Models
         public string Title { get; set; }
         public DateTime CreatedOn { get; set; }
         public string Url { get; set; }
-
         public List<string> Tags { get; set; }
     }
 }

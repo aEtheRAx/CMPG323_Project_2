@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -7,6 +8,7 @@ using SimpleImageGallery.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -32,9 +34,30 @@ namespace SimpleImageGallery.Services
             return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == user_id);
         }
 
+        //Services to find image by means of metadata
+        public IEnumerable<GalleryImage> SearchByTitle(string imageTitle,string user_id)
+        {
+            return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == imageTitle && SimpleImageGallery.user_id == user_id);
+        }
+
+        public IEnumerable<GalleryImage> SearchByID(int imageID, string user_id)
+        {
+            return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Id == imageID && SimpleImageGallery.user_id == user_id);
+        }
+
+        public IEnumerable<GalleryImage> SearchByTag(string imageTag, string user_id)
+        {
+            return GetAll().Where(img => img.Tags.Any(t => t.Description == imageTag));
+            //return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Tags == ParseTags(imageTag) && SimpleImageGallery.user_id == user_id);
+        }
+
+        public IEnumerable<GalleryImage> SearchByUploadDate(string imageDate, string user_id)
+        {
+            return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Created.ToString() == imageDate && SimpleImageGallery.user_id == user_id);
+        }
+
         public GalleryImage GetById(int id)
         {
-            //return _ctx.GalleryImages.Find(id);
             return GetAll().Where(img => img.Id == id).First();
         }
 
@@ -86,19 +109,24 @@ namespace SimpleImageGallery.Services
                 Description = tag}).ToList();
         }
 
-        public string DeleteMediaFile(int id)
+        public string DeleteMediaFile(int id, string userId)
         {
-
-            ImageTag tag = _ctx.ImageTags.Find(id - 2);
-            _ctx.ImageTags.Remove(tag);
             GalleryImage image = _ctx.GalleryImages.Find(id);
-            //var imageTags = image.Tags.ToList();
-            //ImageTag tag = _ctx.ImageTags.Find(_ctx.ImageTags.Where(ImageTag => tag.Description == imageTags))
-            _ctx.GalleryImages.Remove(image);
-            _ctx.SaveChanges();
-            string BlobNameToDelete = image.Url.Split('/').Last();
-            DeleteImage(BlobNameToDelete, "NameOfTheBlobContainer");         // container name
-            return "true";
+
+            if (userId != image.user_id)
+                return "false";
+            else
+            {
+                //ImageTag tag = _ctx.ImageTags.Find(_ctx.ImageTags.Where(t => Convert.ToInt16(t.GalleryImageId) == id));
+                ImageTag tag = _ctx.ImageTags.Find(id - 2);
+                _ctx.ImageTags.Remove(tag);
+                //var imageTags = image.Tags.ToList();
+                _ctx.GalleryImages.Remove(image);
+                _ctx.SaveChanges();
+                string BlobNameToDelete = image.Url.Split('/').Last();
+                DeleteImage(BlobNameToDelete, "NameOfTheBlobContainer");
+                return "true";
+            }
         }
 
         public CloudBlockBlob DeleteImage(string BlobName, string ContainerName)
@@ -111,5 +139,14 @@ namespace SimpleImageGallery.Services
             return blockBlob;
         }
 
+        public async Task updateImage(int imageID, string newTitle, string tags)
+        {
+            //GalleryImage image = _ctx.GalleryImages.Find(Title);
+            GalleryImage image = _ctx.GalleryImages.Find(imageID);
+            image.Title = newTitle;
+            image.Tags = ParseTags(tags);
+            image.Created = DateTime.Now;
+            await _ctx.SaveChangesAsync();
+        }
     }
 }

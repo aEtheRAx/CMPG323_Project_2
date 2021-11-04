@@ -1,11 +1,10 @@
 ﻿@model CMPG323_Project_2.Models.GalleryIndexModel
 
-<div class="container body-content" >
+<div class="container body-content">
     <form asp-controller="Gallery" asp-action="SearchImages" method="get">
         <p>
-            
             @using (Html.BeginForm("SearchImages", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
-             {
+            {
                 @Html.DropDownListFor(m => m.selectedvalue, new List<SelectListItem>
                 {
                     new SelectListItem{ Text="Title", Value = "1" },
@@ -13,11 +12,11 @@
                     new SelectListItem{ Text="Tag", Value = "3" },
                     new SelectListItem{ Text="Upload Date", Value = "4" }
                 })
-        
+
                 <input type="text" name="searchString" value=@ViewData["GetImageDetails"] placeholder="Enter image title here" style="width: 500px; margin-top: 60px; position: relative; margin-left:5px; " />
                 <input type="submit" value="Search" class="btn btn-primary" />
                 <a style="margin-left: 3px;" asp-action="Index">| Clear filter</a>
-             }
+            }
         </p>
     </form>
 
