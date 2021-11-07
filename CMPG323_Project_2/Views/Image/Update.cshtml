@@ -4,21 +4,28 @@
     <div class="row upload-container">
         <div class="upload-form drop-shadow">
             <form asp-action="updateExistingImage"
-                  method="post"
-                  enctype="multipart/form-data"
                   id="upload-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="imageID" class="control-label"></label>
+                    <input asp-for="imageID" class="form-control" />
+                    <span asp-validation-for="imageID" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="newTitle"></label>
                     <input asp-for="newTitle" class="form-control" />
+                    <span asp-validation-for="newTitle" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Tags"></label>
                     <input asp-for="Tags" class="form-control" />
+                    <span asp-validation-for="Tags" class="text-danger"></span>
                 </div>
                 <div class="submit">
-                    <button type="submit" id="btn-upload" class="btn btn-info">
-                        Submit
+                    <button type="submit" id="btn-upload" class="btn btn-info" value="Update">
+                        Update
                     </button>
+                    <a class="btn btn-primary" asp-controller="Gallery" asp-action="Index">Back to Gallery</a>
                 </div>
             </form>
 

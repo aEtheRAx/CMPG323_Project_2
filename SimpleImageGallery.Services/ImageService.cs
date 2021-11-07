@@ -118,7 +118,7 @@ namespace SimpleImageGallery.Services
             else
             {
                 //ImageTag tag = _ctx.ImageTags.Find(_ctx.ImageTags.Where(t => Convert.ToInt16(t.GalleryImageId) == id));
-                ImageTag tag = _ctx.ImageTags.Find(id - 2);
+                ImageTag tag = _ctx.ImageTags.Find(id + 2);
                 _ctx.ImageTags.Remove(tag);
                 //var imageTags = image.Tags.ToList();
                 _ctx.GalleryImages.Remove(image);
@@ -141,10 +141,11 @@ namespace SimpleImageGallery.Services
 
         public async Task updateImage(int imageID, string newTitle, string tags)
         {
-            //GalleryImage image = _ctx.GalleryImages.Find(Title);
             GalleryImage image = _ctx.GalleryImages.Find(imageID);
+            ImageTag imageTag = _ctx.ImageTags.Find(imageID + 2);
+            imageTag.Description = tags;
+            //_ctx.ImageTags.Remove(imageTag);
             image.Title = newTitle;
-            image.Tags = ParseTags(tags);
             image.Created = DateTime.Now;
             await _ctx.SaveChangesAsync();
         }

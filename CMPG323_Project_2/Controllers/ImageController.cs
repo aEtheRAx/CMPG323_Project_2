@@ -62,11 +62,11 @@ namespace CMPG323_Project_2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> updateExistingImage(int imageID, string newTitle, string tags)
+        public async Task<IActionResult> updateExistingImage(int imageID, string newTitle, string Tags)
         {
-            var image = _imageService.GetById(imageID);
-            await _imageService.updateImage(imageID, newTitle, tags);
-            return RedirectToAction("Detail", "Gallery");
+            //var image = _imageService.GetById(imageID);
+            await _imageService.updateImage(imageID, newTitle, Tags);
+            return RedirectToAction("Index", "Gallery");
         }
 
         public IActionResult Delete(int id)
