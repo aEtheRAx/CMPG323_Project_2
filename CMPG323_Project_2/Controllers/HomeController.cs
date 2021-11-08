@@ -1,10 +1,6 @@
 ﻿using CMPG323_Project_2.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CMPG323_Project_2.Controllers
 {
@@ -25,7 +21,6 @@ namespace CMPG323_Project_2.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

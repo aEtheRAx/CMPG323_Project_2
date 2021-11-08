@@ -1,17 +1,9 @@
-﻿using CMPG323_Project_2.Data;
-using CMPG323_Project_2.Models;
+﻿using CMPG323_Project_2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 using SimpleImageGallery.Data;
-//using SimpleImageGallery.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -55,7 +47,7 @@ namespace CMPG323_Project_2.Controllers
             var blockBlob = container.GetBlockBlobReference(fileName);
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
 
-            //string strCurrentUserName = User.Identity.Name;
+            //Alternative way to get userID: string strCurrentUserName = User.Identity.Name;
             string strCurrentUserName = User.FindFirstValue(ClaimTypes.NameIdentifier);
             await _imageService.SetImage(title, tags, blockBlob.Uri,strCurrentUserName );
             return RedirectToAction("Index", "Gallery");
@@ -64,7 +56,6 @@ namespace CMPG323_Project_2.Controllers
         [HttpPost]
         public async Task<IActionResult> updateExistingImage(int imageID, string newTitle, string Tags)
         {
-            //var image = _imageService.GetById(imageID);
             await _imageService.updateImage(imageID, newTitle, Tags);
             return RedirectToAction("Index", "Gallery");
         }

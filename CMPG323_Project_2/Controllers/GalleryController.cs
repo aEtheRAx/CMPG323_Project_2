@@ -1,32 +1,30 @@
 ﻿using CMPG323_Project_2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SimpleImageGallery.Data;
-using SimpleImageGallery.Data.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CMPG323_Project_2.Controllers
 {
     [Authorize]
     public class GalleryController : Controller
     {
-        private readonly SimpleImageGalleryDbContext _db; 
+        //private readonly SimpleImageGalleryDbContext _db; 
         private readonly IImage _imageService;
+        private readonly ILogger _logger;
 
-        public GalleryController(IImage imageService, SimpleImageGalleryDbContext db)
+        public GalleryController(IImage imageService, ILogger<GalleryController> logger /*SimpleImageGalleryDbContext db*/)
         {
-            _db = db;
+            //_db = db;
+            _logger = logger;
             _imageService = imageService;
         }
 
         public IActionResult Index()
         {
-            //var imageList = _imageService.GetAll();
             string strCurrentUserName = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var imageList = _imageService.GetAll(strCurrentUserName);
             var model = new GalleryIndexModel()
@@ -40,7 +38,6 @@ namespace CMPG323_Project_2.Controllers
         public IActionResult Detail(int id)
         {
             var image = _imageService.GetById(id);
-
             var model = new GalleryDetailModel()
             {
                 Id = image.Id,
@@ -49,21 +46,13 @@ namespace CMPG323_Project_2.Controllers
                 Url = image.Url,
                 Tags = image.Tags.Select(t => t.Description).ToList()
             };
-
             return View(model);
         }
 
         //[HttpGet]
-        public /*async Task<IActionResult>*/ IActionResult SearchImages(string searchString, string selectedValue)
+        public IActionResult SearchImages(string searchString, string selectedValue)
         {
-            /*
-            //ViewData["GetImageDetails"] = searchString;
-            var model = from m in _db.GalleryImages select m;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                model = model.Where(GalleryImages => GalleryImages.Title.Contains(searchString));
-            }
-            return View(await model.AsNoTracking().ToListAsync());*/
+            //Get the ID of the user currently logged in
             string strCurrentUserName = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (selectedValue == "1")
             {
@@ -108,6 +97,5 @@ namespace CMPG323_Project_2.Controllers
             else
                 return View("Index");
         }
-
     }
 }
