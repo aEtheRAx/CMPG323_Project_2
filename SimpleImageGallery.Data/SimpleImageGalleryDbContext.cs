@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleImageGallery.Data.Models;
-using System;
 
 namespace SimpleImageGallery.Data
 {

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace CMPG323_Project_2.Models
 {
+    //Model for displaying an Image details
     public class GalleryDetailModel
     {
+        //basic attributes of a image
         public int Id { get; set; }
         public string Title { get; set; }
         public DateTime CreatedOn { get; set; }

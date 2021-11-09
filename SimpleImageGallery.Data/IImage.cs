@@ -2,7 +2,6 @@
 using SimpleImageGallery.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleImageGallery.Data
@@ -19,6 +18,7 @@ namespace SimpleImageGallery.Data
         IEnumerable<GalleryImage> SearchByTag(string imageTag, string user_id);
         IEnumerable<GalleryImage> SearchByUploadDate(string imageDate, string user_id);
 
+        //Basic get method used for displaying or setting values
         IEnumerable<GalleryImage> GetWithTag(string tag);
         GalleryImage GetById(int id);
         CloudBlobContainer GetBlobContainer(string connectionString, string containerName);
@@ -30,7 +30,7 @@ namespace SimpleImageGallery.Data
         //Used to break string of tags into list of tags
         List<ImageTag> ParseTags(string tags);
 
-        //Used to maintain images
+        //Used to maintain images > update || delete
         Task updateImage(int imageID, string newTitle, string tags);
         string DeleteMediaFile(int id, string userId);
 

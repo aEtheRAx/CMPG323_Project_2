@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CMPG323_Project_2.Models
 {
+    //Model for updating an Images
     public class updateImageModel
     {
         public string Id { get; set; }
