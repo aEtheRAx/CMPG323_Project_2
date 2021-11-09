@@ -1,12 +1,15 @@
 {
   "dependencies": {
-    /*"mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection"
-    },*/
     "mssql2": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:Azure_Core_DB"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": "APPINSIGHTS_CONNECTIONSTRING"
     }
   }
 }

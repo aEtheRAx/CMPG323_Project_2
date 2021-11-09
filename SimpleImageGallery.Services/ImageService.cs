@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.Extensions.Logging;
 
 namespace SimpleImageGallery.Services
 {
@@ -19,8 +20,12 @@ namespace SimpleImageGallery.Services
     {
         private IConfiguration _config;
         private readonly SimpleImageGalleryDbContext _ctx;
-        public ImageService(SimpleImageGalleryDbContext ctx)
+        private readonly ILogger _logger;
+
+        //Constructor
+        public ImageService(SimpleImageGalleryDbContext ctx, ILogger<ImageService> logger)
         {
+            _logger = logger;                   //Logging initiated
             _ctx = ctx;
         }
 
@@ -58,7 +63,16 @@ namespace SimpleImageGallery.Services
 
         public GalleryImage GetById(int id)
         {
-            return GetAll().Where(img => img.Id == id).First();
+            try
+            {
+                return GetAll().Where(img => img.Id == id).First();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return GetAll().Where(img => img.Id == 28).First();
+            }
+            
         }
 
         public IEnumerable<GalleryImage> GetWithTag(string tag)

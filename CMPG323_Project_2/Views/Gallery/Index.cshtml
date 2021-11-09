@@ -3,7 +3,7 @@
 <div class="container body-content" >
     <form asp-controller="Gallery" asp-action="SearchImages" method="get">
         <p>
-            
+            <!--ComboBox used to filter by means of metadata-->
             @using (Html.BeginForm("SearchImages", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
              {
                 @Html.DropDownListFor(m => m.selectedvalue, new List<SelectListItem>
