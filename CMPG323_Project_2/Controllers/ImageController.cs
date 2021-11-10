@@ -9,6 +9,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace CMPG323_Project_2.Controllers
 {
@@ -21,19 +23,15 @@ namespace CMPG323_Project_2.Controllers
         //Securely get the connection string to the Azure SQL database
         private string AzureConnectionString { get; }
 
-        private readonly ILogger _logger;
+        //private readonly ApplicationDbContext _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
+        private readonly ILogger<GalleryController> _logger;
+        
         //Overwrite contructor
-        public ImageController(IConfiguration config, IImage imageService)
+        public ImageController(IConfiguration config, IImage imageService, ILogger<GalleryController> logger, UserManager<IdentityUser> userManager)
         {
-            _config = config;
-            _imageService = imageService;
-            AzureConnectionString = _config["AzureStorageConnectionString"];    //Gets the connection string
-        }
-
-        //Overwrite contructor
-        public ImageController(IConfiguration config, IImage imageService, ILogger<GalleryController> logger)
-        {
+            _userManager = userManager;
             _config = config;
             _imageService = imageService;
             _logger = logger;                                                   //Logging initiated
@@ -54,6 +52,12 @@ namespace CMPG323_Project_2.Controllers
             return View();
         }
 
+        public ActionResult ShareImage()
+        {
+            ShareImageModel model = new ShareImageModel();
+            return View();
+        }
+
         //Method to upload a new image 
         [HttpPost]
         public async Task<IActionResult> UploadNewImage(IFormFile file, string tags, string title)
@@ -61,7 +65,7 @@ namespace CMPG323_Project_2.Controllers
             _logger.LogInformation("Upload new Image initaited");
             try
             {
-                ImageController imgController = new ImageController(_config, _imageService);
+                ImageController imgController = new ImageController(_config, _imageService, _logger, _userManager);
                 var container = _imageService.GetBlobContainer(AzureConnectionString, "imagcontainer");
                 var content = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
 
@@ -121,6 +125,24 @@ namespace CMPG323_Project_2.Controllers
                 //Return the gallery (index)
                 return RedirectToAction("Index", "Gallery");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ShareImage(IFormFile file, string tags, string title, string userEmail)
+        {
+            _logger.LogInformation("Share Image initaited");
+
+            ImageController imgController = new ImageController(_config, _imageService, _logger, _userManager);
+            var container = _imageService.GetBlobContainer(AzureConnectionString, "imagcontainer");
+            var content = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+
+            var fileName = content.FileName.Trim('"');
+            var blockBlob = container.GetBlockBlobReference(fileName);
+            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
+
+            string userID = _userManager.Users.FirstOrDefault(x => x.Email == userEmail).Id;
+            await _imageService.SetImage(title, tags, blockBlob.Uri, userID);
+            return RedirectToAction("Index", "Gallery");
         }
     }
 }

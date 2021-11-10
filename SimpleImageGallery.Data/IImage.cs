@@ -33,7 +33,7 @@ namespace SimpleImageGallery.Data
         //Used to maintain images > update || delete
         Task updateImage(int imageID, string newTitle, string tags);
         string DeleteMediaFile(int id, string userId);
-
+        Task ShareImage(string title, string tags, Uri uri, string user_id);
 
     }
 }

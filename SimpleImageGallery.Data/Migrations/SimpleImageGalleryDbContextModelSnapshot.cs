@@ -14,7 +14,8 @@ namespace SimpleImageGallery.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("Relational:MaxIdentifierLength", 1
+                )
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SimpleImageGallery.Data.Models.GalleryImage", b =>

@@ -46,7 +46,7 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogTrace(ex, ex.Message);
                 //Return an default image to indicate no result was found
-                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == "NoResult");
+                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == "Error");
             }
         }
 
@@ -62,7 +62,7 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogTrace(ex, ex.Message);
                 //Return an default image to indicate no result was found
-                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == "NoResult");
+                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == "Error");
             }
         }
 
@@ -77,7 +77,7 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogTrace(ex, ex.Message);
                 //Return an default image to indicate no result was found
-                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == "NoResult");
+                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == "Error");
             }
         }
 
@@ -92,7 +92,7 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogTrace(ex, ex.Message);
                 //Return an default image to indicate no result was found
-                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == "NoResult");
+                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == "Error");
             }
         }
 
@@ -107,7 +107,7 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogTrace(ex, ex.Message);
                 //Return an default image to indicate no result was found
-                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.user_id == "NoResult");
+                return _ctx.GalleryImages.Where(SimpleImageGallery => SimpleImageGallery.Title == "Error");
             }
         }
 
@@ -121,7 +121,7 @@ namespace SimpleImageGallery.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return GetAll().Where(img => img.Id == 28).First();
+                return GetAll().Where(img => img.Id == 34).First();
             } 
         }
 
@@ -160,7 +160,6 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogError(ex, ex.Message);
             }
-            
         }
 
         //Set image override method
@@ -250,6 +249,21 @@ namespace SimpleImageGallery.Services
             {
                 _logger.LogError(ex, ex.Message);
             }
+        }
+
+        public async Task ShareImage(string title, string tags, Uri uri, string user_id)
+        {
+                _logger.LogInformation("ImageService > ShareImage called");
+                var image = new GalleryImage
+                {
+                    Title = title,
+                    Tags = ParseTags(tags),
+                    Url = uri.AbsoluteUri,
+                    Created = DateTime.Now,
+                    user_id = user_id
+                };
+                _ctx.GalleryImages.Add(image);
+                await _ctx.SaveChangesAsync();
         }
     }
 }
