@@ -250,20 +250,5 @@ namespace SimpleImageGallery.Services
                 _logger.LogError(ex, ex.Message);
             }
         }
-
-        public async Task ShareImage(string title, string tags, Uri uri, string user_id)
-        {
-                _logger.LogInformation("ImageService > ShareImage called");
-                var image = new GalleryImage
-                {
-                    Title = title,
-                    Tags = ParseTags(tags),
-                    Url = uri.AbsoluteUri,
-                    Created = DateTime.Now,
-                    user_id = user_id
-                };
-                _ctx.GalleryImages.Add(image);
-                await _ctx.SaveChangesAsync();
-        }
     }
 }
