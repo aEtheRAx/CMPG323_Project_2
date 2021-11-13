@@ -1,22 +1,44 @@
 ﻿@model CMPG323_Project_2.Models.GalleryDetailModel
 
-<div class="container body-content">
+<style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font: 400 15px/1.8 "Lato", sans-serif;
+            color: #777;
+        }
+
+
+    body {
+        background-repeat: no-repeat, repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: whitesmoke;
+        position: relative;
+        opacity: 200%
+    }
+</style>
+
+<div class="container body-content" >
     <div class=" row image-detail-container">
         <div class="image-detail">
             <img src="@Model.Url" alt="@Model.Title" />
 
         </div>
     </div>
-    <div class="row image-detail-meta">
+    <div class="row image-detail-meta" style="color:black">
         <span>Title: @Model.Title</span>
         <span>Uploaded: @Model.CreatedOn</span>
     </div>
     
-    <div class="row controls">
+    <div class="row controls" style="padding-bottom:20px;">
         <hr />
         <a class="btn btn-primary" asp-controller="Gallery" asp-action="Index">Back to Gallery</a>
         <a class="btn btn-primary" href="@Model.Url">Download</a>
         <a href="@Url.Action("Update", "Image", new { imageID = Model.Id })" class="btn btn-primary">Update</a>
         <a href="@Url.Action("Delete","Image",new { id = Model.Id })" class="btn btn-primary">Delete</a>
+
     </div>
+    <hr/>
+
 </div>

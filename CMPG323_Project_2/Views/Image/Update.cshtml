@@ -1,24 +1,46 @@
 ﻿@model CMPG323_Project_2.Models.updateImageModel
 
+<style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font: 400 15px/1.8 "Lato", sans-serif;
+            color: #777;
+        }
+
+
+            body {
+                background-image: url('@Url.Content("~/images/snow_animated.jpg")');
+                background-repeat: no-repeat, repeat;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                opacity:200%
+            }
+</style>
+
 <div class="container body-content">
     <div class="row upload-container">
+        
         <div class="upload-form drop-shadow">
+            <h2 style="color:black; padding-bottom:20px;">Update</h2>
             <form asp-action="updateExistingImage"
                   id="upload-form">
+
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="imageID" class="control-label"></label>
-                    <input asp-for="imageID" class="form-control" />
+                    <input asp-for="imageID" class="form-control" placeholder="Image ID, ex: 34"/>
                     <span asp-validation-for="imageID" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="newTitle"></label>
-                    <input asp-for="newTitle" class="form-control" />
+                    <input asp-for="newTitle" class="form-control" placeholder="Title"/>
                     <span asp-validation-for="newTitle" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Tags"></label>
-                    <input asp-for="Tags" class="form-control" />
+                    <input asp-for="Tags" class="form-control" placeholder="Tag"/>
                     <span asp-validation-for="Tags" class="text-danger"></span>
                 </div>
                 <div class="submit">

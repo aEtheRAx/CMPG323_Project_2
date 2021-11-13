@@ -1,7 +1,35 @@
 ﻿@{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font: 400 15px/1.8 "Lato", sans-serif;
+            color: #777;
+        }
 
-<p>Use this area to provide additional information.</p>
+
+            body {
+                background-image: url('@Url.Content("~/images/snow_animated.jpg")');
+                background-repeat: no-repeat, repeat;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                opacity:200%
+            }
+</style>
+
+
+<h2 style="color:black">@ViewData["Title"]</h2>
+<!--<h3>@ViewData["Message"]</h3>-->
+
+<h3 style="color:black">Introduction</h3>
+<p style="color:black">The following document outlines multiple dimensions of project one. A web application should be designed that fundamentally serves as a platform where users of a digital marketing company can share, view, and store photos. The need therefore manifested itself in the fact that the current system led to confusion about which photos were the latest versions and with whom they were shared. As such the application to be designed needed to be as consistent, easy to use, and intuitive as possible while offering both user management and photo management. </pstyle="color:black">
+
+<h3 style="color:black">System overview</h3>
+<p style="color:black">
+    The user accesses the platform, hosted on Azure, by means of entering a URL into their browser. The user will typically then try to register or log into their already existing account. As such the application will test the credentials against the SQL databased hosted on Azure. This process is handled by the Identity framework.
+    Once the user has successfully registered or logged into their account, they can view their gallery. Part of the SQL database is a gallery table which contains each photo’s ID, along with the user ID and link to the specific photo stored in Azure by means of their blob storage service. This approach makes it possible for users to only be able to view the photos that they have access to.
+    Users are free to click on any of the images in their gallery in order to view the specific image along with it’s metadata. Also, while viewing the image, users can then choose to update metadata, delete, or download the image. This introduces a more logical flow of work. Alternatively, the user can choose to upload a new image and enter any of the preferred metadata associated with the image that’s about to be uploaded. The metadata will be captured in the SQL database and the image itself will be uploaded to blob storage.
+</p>

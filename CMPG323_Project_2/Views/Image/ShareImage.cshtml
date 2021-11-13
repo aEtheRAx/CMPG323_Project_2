@@ -1,23 +1,44 @@
 ﻿@model CMPG323_Project_2.Models.ShareImageModel
 
+<style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font: 400 15px/1.8 "Lato", sans-serif;
+            color: #777;
+        }
+
+
+            body {
+                background-image: url('@Url.Content("~/images/snow_animated.jpg")');
+                background-repeat: no-repeat, repeat;
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                opacity:200%
+            }
+</style>
+
+
 <div class="container body-content">
-    <div class="row upload-container">
+    <div class="row upload-container"> 
         <div class="upload-form drop-shadow">
+            <h2 style="color:black; padding-bottom:20px;">Share Image</h2>
             <form asp-action="ShareImage"
                   method="post"
                   enctype="multipart/form-data"
                   id="upload-form">
                 <div class="form-group">
                     <label asp-for="Title"></label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" placeholder="Title"/>
                 </div>
                 <div class="form-group">
                     <label asp-for="Tags"></label>
-                    <input asp-for="Tags" class="form-control" />
+                    <input asp-for="Tags" class="form-control" placeholder="Tag"/>
                 </div>
                 <div class="form-group">
                     <label asp-for="userEmail"></label>
-                    <input asp-for="userEmail" class="form-control" />
+                    <input asp-for="userEmail" class="form-control" placeholder="user@gmail.com" />
                 </div>
                 <div>
                     <label class="btn btn-default btn-file">
