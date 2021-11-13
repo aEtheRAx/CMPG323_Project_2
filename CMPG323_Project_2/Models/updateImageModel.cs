@@ -11,5 +11,6 @@ namespace CMPG323_Project_2.Models
         public string Title { get; set; }
         public string newTitle { get; set; }
         public string Tags { get; set; }
+
     }
 }

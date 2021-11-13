@@ -204,7 +204,7 @@ namespace SimpleImageGallery.Services
                 else
                 {
                     //ImageTag tag = _ctx.ImageTags.Find(_ctx.ImageTags.Where(t => Convert.ToInt16(t.GalleryImageId) == id));
-                    ImageTag tag = _ctx.ImageTags.Find(id + 2);
+                    ImageTag tag = _ctx.ImageTags.Find(id);
                     _ctx.ImageTags.Remove(tag);
                     //var imageTags = image.Tags.ToList();
                     _ctx.GalleryImages.Remove(image);
@@ -238,7 +238,7 @@ namespace SimpleImageGallery.Services
             try
             {
                 GalleryImage image = _ctx.GalleryImages.Find(imageID);
-                ImageTag imageTag = _ctx.ImageTags.Find(imageID + 2);
+                ImageTag imageTag = _ctx.ImageTags.Find(imageID);
                 imageTag.Description = tags;
                 //_ctx.ImageTags.Remove(imageTag);
                 image.Title = newTitle;

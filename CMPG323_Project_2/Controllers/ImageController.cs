@@ -48,8 +48,9 @@ namespace CMPG323_Project_2.Controllers
         //View for UPDATING an existing image
         public IActionResult Update()
         {
+            //Started
             var model = new updateImageModel();
-            return View();
+            return View(model);
         }
 
         public ActionResult ShareImage()
